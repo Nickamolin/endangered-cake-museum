@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,11 +12,23 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidBody;
 
     // set the player speed
-    [SerializeField] private float speed = 5f;
+    private float speed;
+    [SerializeField] private float walkSpeed = 2.5f;
+    [SerializeField] private float sprintSpeed = 5f;
 
     // keep track of enemy vision cone collision
     private bool inVisionCone;
     GameObject currentGuardObject;
+
+    // handling detection
+    public float maxDetection = 100f;
+    public float currentDetection;
+    public float detectionRate = 1f;
+    public float forgetRate = 0.5f;
+
+    public Image progressBar;
+
+    private bool isCaught;
 
     // keep track of key collection
     private bool hasKey;
@@ -39,6 +52,12 @@ public class PlayerController : MonoBehaviour
         playerText = playerTextObject.GetComponent<TextMeshPro>();
 
         flashlightOn = true;
+
+        currentDetection = 0;
+
+        isCaught = false;
+
+        speed = walkSpeed;
     }
 
     // Update is called once per frame
@@ -57,42 +76,63 @@ public class PlayerController : MonoBehaviour
             }
             else {
                 Debug.Log("no wall detected");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                currentDetection += detectionRate * Time.deltaTime;
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
         // handle player inputs
-        if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
-        }
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) {
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, -speed);
-        }
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
-            rigidBody.velocity = new Vector2(-speed, rigidBody.velocity.y);
-        }
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
-            rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+        if (!isCaught) {
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
+            }
+            if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) {
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, -speed);
+            }
+            if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
+                rigidBody.velocity = new Vector2(-speed, rigidBody.velocity.y);
+            }
+            if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
+                rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                toggleFlashlight();
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift)) {
+                speed = sprintSpeed;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftShift)) {
+                speed = walkSpeed;
+            }
+
+            // handle sprite facing direction
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+            Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+
+            transform.right = mouseDirection;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            toggleFlashlight();
+        // handle detection
+        //currentDetection += detectionRate * Time.deltaTime;
+        currentDetection -= forgetRate * Time.deltaTime;
+
+        if (currentDetection > maxDetection) {
+            currentDetection = maxDetection;
+        }
+        else if (currentDetection < 0) {
+            currentDetection = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            speed = 1.3f * speed;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift)) {
-            speed = speed / 1.3f;
+        if (currentDetection == maxDetection) {
+            isCaught = true;
+            StartCoroutine(handleCaught());
         }
 
-        // handle sprite facing direction
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
-
-        transform.right = mouseDirection;
+        progressBar.transform.localScale = new Vector3(1, currentDetection/maxDetection, 1);
 
     }
 
@@ -131,6 +171,13 @@ public class PlayerController : MonoBehaviour
     IEnumerator clearText() {
         yield return new WaitForSeconds(5f);
         playerText.text = "";
+    }
+
+    IEnumerator handleCaught() {
+        playerText.text = "Caught.";
+        playerText.color = Color.red;
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void toggleFlashlight() {

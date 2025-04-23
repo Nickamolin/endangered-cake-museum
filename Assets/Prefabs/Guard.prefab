@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 713556999934616082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.394, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0.458, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 58.44379
   m_PointLightOuterAngle: 80.57637
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 10.37
+  m_PointLightOuterRadius: 8.8
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -910,6 +910,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationList: {fileID: 2839676222053045020}
   speed: 2.5
+  stationRotationSpeed: 100
+  concernedRotationSpeed: 350
   playerObject: {fileID: 0}
 --- !u!1 &7717285579514038498
 GameObject:
