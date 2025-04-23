@@ -7986,6 +7986,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   playerTextObject: {fileID: 1306843014}
+  renderingFlashLight: {fileID: 1342794068}
+  flashLightCollider: {fileID: 463879005}
 --- !u!58 &1794481265
 CircleCollider2D:
   m_ObjectHideFlags: 0

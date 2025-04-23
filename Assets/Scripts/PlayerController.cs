@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class PlayerController : MonoBehaviour
     // set the player speed
     [SerializeField] private float speed = 5f;
 
+    // keep track of enemy vision cone collision
+    private bool inVisionCone;
+    GameObject currentGuardObject;
+
     // keep track of key collection
     private bool hasKey;
 
@@ -20,22 +25,41 @@ public class PlayerController : MonoBehaviour
     private TextMeshPro playerText;
 
     // flashlight controls
-    private bool flashlight;
+    private bool flashlightOn;
+    [SerializeField] private Light2D renderingFlashLight;
+    [SerializeField] private PolygonCollider2D flashLightCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        
         hasKey = false;
 
         playerText = playerTextObject.GetComponent<TextMeshPro>();
 
-        flashlight = true;
+        flashlightOn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (inVisionCone) {
+            //GameObject guardCollidedWith = collision.transform.parent.gameObject;
+            Vector2 guardDirection = new Vector2(currentGuardObject.transform.position.x - transform.position.x, currentGuardObject.transform.position.y - transform.position.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, guardDirection, guardDirection.magnitude, LayerMask.GetMask("Wall"));
+
+            if (hit) {
+                // wall in the way, dont reload scene
+                Debug.Log("detected hit");
+            }
+            else {
+                Debug.Log("no wall detected");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
 
         // handle player inputs
         if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
@@ -50,8 +74,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
             rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
         }
-        else {
-            
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            toggleFlashlight();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            speed = 10f;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift)) {
+            speed = 5f;
         }
 
         // handle sprite facing direction
@@ -68,27 +100,8 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.tag == "VisionCone") {
             
-            // string currentSceneName = SceneManager.GetActiveScene().name;
-            // SceneManager.LoadScene(currentSceneName);
-
-            GameObject guardCollidedWith = collision.transform.parent.gameObject;
-            Vector2 guardDirection = new Vector2(guardCollidedWith.transform.position.x - transform.position.x, guardCollidedWith.transform.position.y - transform.position.y);
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, guardDirection, guardDirection.magnitude, LayerMask.GetMask("Wall"));
-
-
-            // Debug.Log(LayerMask.GetMask("Wall").ToString());
-            // Debug.Log(guardDirection.magnitude.ToString());
-            // Debug.DrawRay(transform.position, guardDirection, Color.green, 60f);
-
-            if (hit) {
-                // wall in the way, dont reload scene
-                Debug.Log("detected hit");
-            }
-            else {
-                Debug.Log("no wall detected");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            inVisionCone = true;
+            currentGuardObject = collision.transform.parent.gameObject;
             
         }
         else if (collision.tag == "Key") {
@@ -109,9 +122,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.tag == "VisionCone") {
+            inVisionCone = false;
+        }
+    }
+
     IEnumerator clearText() {
         yield return new WaitForSeconds(5f);
         playerText.text = "";
+    }
+
+    private void toggleFlashlight() {
+        if (flashlightOn) {
+            flashlightOn = false;
+            renderingFlashLight.intensity = 0f;
+            flashLightCollider.enabled = false;
+        }
+        else {
+            flashlightOn = true;
+            renderingFlashLight.intensity = 1f;
+            flashLightCollider.enabled = true;
+        }
     }
 }
 

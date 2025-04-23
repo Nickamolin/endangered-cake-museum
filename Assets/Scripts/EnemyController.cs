@@ -59,6 +59,7 @@ public class EnemyController : MonoBehaviour
                 Debug.Log("no wall detected");
                 state = State.concerned;
                 lastPlayerPosition = currentlayerPosition;
+                StartCoroutine(lookForPlayer());
             }
         }
 
@@ -67,10 +68,9 @@ public class EnemyController : MonoBehaviour
             if (stationDirection.magnitude > 0.3f) {
                 rigidBody.velocity = speed * stationDirection / stationDirection.magnitude;
 
-                //Debug.Log(Quaternion.LookRotation(stationDirection).ToString());
-                
-                // float angle = Mathf.Atan2(stationDirection.y, stationDirection.x) * Mathf.Rad2Deg;
-        	    // transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                float angle = Mathf.Atan2(stationPosition.y - transform.position.y, stationPosition.x - transform.position.x) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 100 * Time.deltaTime);
 
             }
             else {
@@ -83,10 +83,6 @@ public class EnemyController : MonoBehaviour
 
                 StartCoroutine(idle());
             }
-
-            float angle = Mathf.Atan2(stationPosition.y - transform.position.y, stationPosition.x - transform.position.x) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 100 * Time.deltaTime);
             
         }
         else if (state == State.looking) {
@@ -95,9 +91,6 @@ public class EnemyController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 100 * Time.deltaTime);
         }
         else if (state == State.concerned) {
-
-            StartCoroutine(lookForPlayer());
-
             float angle = Mathf.Atan2(lastPlayerPosition.y - transform.position.y, lastPlayerPosition.x - transform.position.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 100 * Time.deltaTime);
@@ -142,6 +135,8 @@ public class EnemyController : MonoBehaviour
     IEnumerator lookForPlayer() {
         yield return new WaitForSeconds(5f);
         
-        state = State.walking;
+        if (state == State.concerned) {
+            state = State.walking;
+        }
     }
 }
