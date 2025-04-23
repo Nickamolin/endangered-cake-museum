@@ -80,10 +80,10 @@ public class PlayerController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            speed = 10f;
+            speed = 1.3f * speed;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift)) {
-            speed = 5f;
+            speed = speed / 1.3f;
         }
 
         // handle sprite facing direction
