@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     // keep track of key collection
     private bool hasKey;
+    [SerializeField] private AudioClip collectKey;
 
     // handle player text
     public GameObject playerTextObject;
@@ -193,6 +194,7 @@ public class PlayerController : MonoBehaviour
         else if (collision.tag == "Key") {
             hasKey = true;
             playerText.text = "Found a key!";
+            audioSource.PlayOneShot(collectKey);
             Destroy(collision.gameObject);
             StartCoroutine(clearText());
         }

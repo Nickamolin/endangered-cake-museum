@@ -18,6 +18,8 @@ public class StoryTextController : MonoBehaviour
     private string storyText;
     private string continueButtonText;
     private int textIndex;
+    public AudioSource audioSource;
+    public AudioClip characterSound;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,7 @@ public class StoryTextController : MonoBehaviour
         
         if (storyTextDisplay.text.Length < storyText.Length) {
             storyTextDisplay.text = storyTextDisplay.text + storyText[textIndex];
+            audioSource.PlayOneShot(characterSound);
             textIndex++;
 
             StartCoroutine(updateText());
