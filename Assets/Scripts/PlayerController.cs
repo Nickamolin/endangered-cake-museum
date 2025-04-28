@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
         else if (collision.tag == "Door") {
             // load next scene, currently just restart scene
             if (hasKey) {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
             else {
                 playerText.text = "Need key...";
