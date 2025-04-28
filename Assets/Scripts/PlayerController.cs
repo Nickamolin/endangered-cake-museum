@@ -23,12 +23,20 @@ public class PlayerController : MonoBehaviour
     // handling detection
     public float maxDetection = 100f;
     public float currentDetection;
-    public float detectionRate = 1f;
-    public float forgetRate = 0.5f;
+    public float detectionRate = 150f;
+    public float forgetRate = 20f;
 
     public Image progressBar;
 
     private bool isCaught;
+
+    // handling sprint
+    public float maxStamina = 100f;
+    public float currentStamina;
+    public float staminaUseRate = 150f;
+    public float staminaRechargeRate = 20f;
+
+    public Image staminaBar;
 
     // keep track of key collection
     private bool hasKey;
@@ -57,6 +65,8 @@ public class PlayerController : MonoBehaviour
         flashlightOn = true;
 
         currentDetection = 0;
+
+        currentStamina = maxStamina;
 
         isCaught = false;
 
@@ -103,10 +113,14 @@ public class PlayerController : MonoBehaviour
                 toggleFlashlight();
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftShift)) {
-                speed = sprintSpeed;
+            if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0) {
+                if (currentStamina > 5) {
+                    speed = sprintSpeed;
+                }
+                currentStamina -= staminaUseRate * Time.deltaTime;
             }
-            if (Input.GetKeyUp(KeyCode.LeftShift)) {
+            else {
+                currentStamina += staminaRechargeRate * Time.deltaTime;
                 speed = walkSpeed;
             }
 
@@ -136,6 +150,17 @@ public class PlayerController : MonoBehaviour
         }
 
         progressBar.transform.localScale = new Vector3(1, currentDetection/maxDetection, 1);
+
+        // handle stamina
+
+        if (currentStamina > maxStamina) {
+            currentStamina = maxStamina;
+        }
+        else if (currentStamina < 0) {
+            currentStamina = 0;
+        }
+
+        staminaBar.transform.localScale = new Vector3(1, currentStamina/maxStamina, 1);
 
     }
 
