@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Light2D renderingFlashLight;
     [SerializeField] private PolygonCollider2D flashLightCollider;
 
+    // level controls
+    public string nextLevel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -153,7 +156,7 @@ public class PlayerController : MonoBehaviour
         else if (collision.tag == "Door") {
             // load next scene, currently just restart scene
             if (hasKey) {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneManager.LoadScene(nextLevel);
             }
             else {
                 playerText.text = "Need key...";
