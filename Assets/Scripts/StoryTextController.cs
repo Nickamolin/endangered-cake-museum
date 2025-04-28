@@ -9,13 +9,14 @@ public class StoryTextController : MonoBehaviour
 {
 
     private TextMeshProUGUI storyTextDisplay;
-    private TextMeshProUGUI continueButtonText;
+    private TextMeshProUGUI continueButtonTextDisplay;
     public Button continueButton;
     public string nextLevelName;
     
     public float textSpeed;
 
     private string storyText;
+    private string continueButtonText;
     private int textIndex;
 
     // Start is called before the first frame update
@@ -33,14 +34,20 @@ public class StoryTextController : MonoBehaviour
         continueButton.onClick.AddListener(TaskOnClick);
 
         continueButton.enabled = false;
-        continueButtonText = continueButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        continueButtonText.text = "";
+        continueButtonTextDisplay = continueButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        
+        continueButtonText = continueButtonTextDisplay.text;
+        continueButtonTextDisplay.text = "";
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+            storyTextDisplay.text = storyText;
 
+            showContinueButton();
+        }
     }
 
     IEnumerator updateText() {
@@ -53,12 +60,16 @@ public class StoryTextController : MonoBehaviour
             StartCoroutine(updateText());
         }
         else {
-            continueButton.enabled = true;
-            continueButtonText.text = "Continue";
+            showContinueButton();
         }
     }
 
     void TaskOnClick(){
 		SceneManager.LoadScene(nextLevelName);
 	}
+
+    void showContinueButton() {
+        continueButton.enabled = true;
+        continueButtonTextDisplay.text = continueButtonText;
+    }
 }

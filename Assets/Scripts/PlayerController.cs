@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
         // handle player inputs
         if (!isCaught) {
+            // directional movement
             if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
             }
@@ -109,10 +110,12 @@ public class PlayerController : MonoBehaviour
                 rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            // toggle flashlight
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
                 toggleFlashlight();
             }
 
+            // sprinting
             if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0) {
                 if (currentStamina > 5) {
                     speed = sprintSpeed;
@@ -131,6 +134,13 @@ public class PlayerController : MonoBehaviour
             Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
 
             transform.right = mouseDirection;
+        }
+        else {
+            // player got caught
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+                
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
         // handle detection
