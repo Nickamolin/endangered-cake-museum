@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue
+  m_text: Restart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
   m_sharedMaterial: {fileID: 6509952975194454051, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
@@ -314,11 +314,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ridley lives in America in the year 2049 - 7 years after sugar was officially
-    banned throughout the country.\n\nCake manufacturing has since stopped, and thus
-    cake is no longer a good that Ridley's parents can simply buy.\n\nRidley\u2019s
-    parents have reluctantly refused to find Ridley a cake for the party, but Ridley
-    is determined."
+  m_text: 'Ridley has found the cake.
+
+
+    His 10th birthday party is saved.
+
+
+    You
+    win!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
   m_sharedMaterial: {fileID: 6509952975194454051, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
@@ -408,7 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   continueButton: {fileID: 1149724505}
-  nextLevelName: Level3
+  nextLevelName: Level1
   textSpeed: 0.05
 --- !u!1 &1149724503
 GameObject:

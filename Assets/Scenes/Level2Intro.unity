@@ -314,7 +314,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 2 Story text
+  m_text: "Ridley is a 9 year old that is looking forward to his 10th birthday party.
+    \n\nRidley\u2019s parents are planning on throwing Ridley a birthday party, and
+    Ridley has specifically requested a big birthday cake. \n\nRidley has seen shows
+    and movies where children receive cakes, and has a faint memory of potentially
+    receiving one himself when he was very young (though he is not sure)."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
   m_sharedMaterial: {fileID: 6509952975194454051, guid: 11396c04aae9b4029b7e37f9a7a143fb, type: 2}
