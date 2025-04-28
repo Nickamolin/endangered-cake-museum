@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     // handling detection
     public float maxDetection = 100f;
     public float currentDetection;
-    public float detectionRate = 150f;
+    public float detectionRate = 100f;
     public float forgetRate = 20f;
 
     public Image progressBar;
@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
     // handling sprint
     public float maxStamina = 100f;
     public float currentStamina;
-    public float staminaUseRate = 150f;
-    public float staminaRechargeRate = 20f;
+    public float staminaUseRate = 50f;
+    public float staminaRechargeRate = 30f;
 
     public Image staminaBar;
 
