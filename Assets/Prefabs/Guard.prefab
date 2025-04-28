@@ -912,7 +912,7 @@ MonoBehaviour:
   speed: 2.5
   stationRotationSpeed: 100
   concernedRotationSpeed: 350
-  playerObject: {fileID: 0}
+  playerObject: {fileID: 8736944507597993576, guid: 4c4ec373765954317a2ed820abaa142b, type: 3}
 --- !u!1 &7717285579514038498
 GameObject:
   m_ObjectHideFlags: 0
