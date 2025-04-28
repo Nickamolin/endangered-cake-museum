@@ -3,7 +3,13 @@ guid: 0bb66a2991f154d939686caa38848731
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - progressBar: {instanceID: 0}
+  - staminaBar: {instanceID: 0}
+  - playerTextObject: {instanceID: 0}
+  - renderingFlashLight: {instanceID: 0}
+  - flashLightCollider: {instanceID: 0}
+  - flashlightClickSound: {fileID: 8300000, guid: 217f884f732cc8bfb869cee377c3cb3a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

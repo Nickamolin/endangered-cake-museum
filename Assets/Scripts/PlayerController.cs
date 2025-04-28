@@ -25,9 +25,10 @@ public class PlayerController : MonoBehaviour
     public float currentDetection;
     public float detectionRate = 100f;
     public float forgetRate = 20f;
-
+    [SerializeField] private AudioClip caughtWarningSound;
+    private float caughtSoundCooldown = 3f;
+    private float nextCaughtSoundTime = 0f;
     public Image progressBar;
-
     private bool isCaught;
 
     // handling sprint
@@ -35,7 +36,6 @@ public class PlayerController : MonoBehaviour
     public float currentStamina;
     public float staminaUseRate = 50f;
     public float staminaRechargeRate = 30f;
-
     public Image staminaBar;
 
     // keep track of key collection
@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
     private bool flashlightOn;
     [SerializeField] private Light2D renderingFlashLight;
     [SerializeField] private PolygonCollider2D flashLightCollider;
+    [SerializeField] private AudioClip flashlightClickSound;
+    private AudioSource audioSource;
 
     // level controls
     public string nextLevel;
@@ -63,6 +65,8 @@ public class PlayerController : MonoBehaviour
         playerText = playerTextObject.GetComponent<TextMeshPro>();
 
         flashlightOn = true;
+
+        audioSource = GetComponent<AudioSource>();
 
         currentDetection = 0;
 
@@ -91,6 +95,10 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("no wall detected");
                 currentDetection += detectionRate * Time.deltaTime;
                 //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                if (Time.time >= nextCaughtSoundTime) {
+                    audioSource.PlayOneShot(caughtWarningSound);
+                    nextCaughtSoundTime = Time.time + caughtSoundCooldown;
+                }
             }
         }
 
@@ -223,11 +231,13 @@ public class PlayerController : MonoBehaviour
             flashlightOn = false;
             renderingFlashLight.intensity = 0f;
             flashLightCollider.enabled = false;
+            audioSource.PlayOneShot(flashlightClickSound);
         }
         else {
             flashlightOn = true;
             renderingFlashLight.intensity = 1f;
             flashLightCollider.enabled = true;
+            audioSource.PlayOneShot(flashlightClickSound);
         }
     }
 }
