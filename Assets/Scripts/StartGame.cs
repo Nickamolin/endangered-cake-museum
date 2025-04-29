@@ -18,6 +18,8 @@ public class StartGame : MonoBehaviour
     private string titleText;
     private string startButtonText;
     private int textIndex;
+    public AudioSource audioSource;
+    public AudioClip characterSound;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,7 @@ public class StartGame : MonoBehaviour
         
         if (titleTextDisplay.text.Length < titleText.Length) {
             titleTextDisplay.text = titleTextDisplay.text + titleText[textIndex];
+            audioSource.PlayOneShot(characterSound);
             textIndex++;
 
             StartCoroutine(updateText());
