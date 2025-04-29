@@ -208,6 +208,9 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(clearText());
             }
         }
+        else if (collision.tag == "Cake") {
+            SceneManager.LoadScene(nextLevel);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
