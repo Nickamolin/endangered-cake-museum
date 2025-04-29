@@ -1,7 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/K9mkLa3E)
 
-### Game Title:
-# Endangered Cake Museum
+## Game Title:
+**Endangered Cake Museum**
 
 ## Brief Elevator Pitch Describing Game:
 In a world where sugar has been outlawed, you control a child that has snuck into a museum at night in order to find a preserved cake for his/her upcoming birthday party - avoid getting detected by security guards as you find keys and navigate levels in this top down stealth game!
