@@ -1,6 +1,8 @@
 # Endangered Cake Museum
 Play it [here](https://drakonnic.itch.io/endangered-cake-museum).
 
+![Game Preview](https://github.com/Nickamolin/endangered-cake-museum/blob/main/EndangeredCakeMuseumTitleScreenSS.png "Game Start Preview")
+
 ## Brief Elevator Pitch Describing Game:
 In a world where sugar has been outlawed, you control a child that has snuck into a museum at night in order to find a preserved cake for his/her upcoming birthday party - avoid getting detected by security guards as you find keys and navigate levels in this top down stealth game!
 
