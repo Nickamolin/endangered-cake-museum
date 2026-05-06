@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
         playerText = playerTextObject.GetComponent<TextMeshPro>();
 
-        flashlightOn = true;
+        flashlightOn = false;
 
         audioSource = GetComponent<AudioSource>();
 
