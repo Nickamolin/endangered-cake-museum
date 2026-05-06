@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyController : MonoBehaviour
 {
@@ -27,6 +28,15 @@ public class EnemyController : MonoBehaviour
 
     private Collider2D coll;
 
+    // set up alert ! text display
+    [SerializeField] private GameObject alertPrefab;
+    [SerializeField] private Vector3 alertOffset = new Vector3(0f, 1f, 0f);
+
+    private GameObject alertInstance;
+    private TextMeshPro alertText;
+
+    [SerializeField] private float fadeSpeed = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,15 +50,29 @@ public class EnemyController : MonoBehaviour
         state = State.walking;
 
         inPlayerVisionCone = false;
+
+        alertInstance = Instantiate(alertPrefab, transform.position + alertOffset, Quaternion.identity);
+        alertText = alertInstance.GetComponent<TextMeshPro>();
+
+        Color c = alertText.color;
+        c.a = 0f;
+        alertText.color = c;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Color c = alertText.color;
+        c.a = Mathf.Clamp01(c.a - fadeSpeed * Time.deltaTime);
+        alertText.color = c;
+
         if (coll.IsTouchingLayers(LayerMask.GetMask("Player"))) {
             state = State.concerned;
             lastPlayerPosition = playerObject.transform.position;
             StartCoroutine(lookForPlayer());
+
+            c.a = 1f;
+            alertText.color = c;
         }
 
         Vector2 stationPosition = stationList.transform.GetChild(stationIndex).position;
@@ -70,6 +94,9 @@ public class EnemyController : MonoBehaviour
                 state = State.concerned;
                 lastPlayerPosition = currentPlayerPosition;
                 StartCoroutine(lookForPlayer());
+
+                c.a = 1f;
+                alertText.color = c;
             }
         }
 
@@ -106,6 +133,7 @@ public class EnemyController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, concernedRotationSpeed * Time.deltaTime);
         }
 
+        alertInstance.transform.position = transform.position + alertOffset;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

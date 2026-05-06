@@ -914,6 +914,9 @@ MonoBehaviour:
   stationRotationSpeed: 100
   concernedRotationSpeed: 350
   playerObject: {fileID: 8736944507597993576, guid: 4c4ec373765954317a2ed820abaa142b, type: 3}
+  alertPrefab: {fileID: 6973366236838847962, guid: 49a632046ae314831b410095e5b182f0, type: 3}
+  alertOffset: {x: 0, y: 1, z: -0.9}
+  fadeSpeed: 0.3
 --- !u!82 &8011083917227161913
 AudioSource:
   m_ObjectHideFlags: 0
