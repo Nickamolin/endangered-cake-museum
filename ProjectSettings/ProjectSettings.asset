@@ -691,7 +691,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -711,11 +717,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 90b50152-6ac6-4664-a8c3-185f36af0cc5
+  cloudProjectId: 4040884b-0155-4539-9424-a954e51fdbc9
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Endangered Cake Museum 2025-04-21_14-14-49
-  organizationId: technon777
+  projectName: Endangered Cake Museum
+  organizationId: nicholasgamolin
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
