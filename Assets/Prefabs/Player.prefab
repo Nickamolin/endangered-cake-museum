@@ -436,6 +436,7 @@ MonoBehaviour:
   moveAction: {fileID: -963742696133575064, guid: e8108c3abc75549229210073e44c73f9, type: 3}
   toggleFlashlightAction: {fileID: 8045415459786167579, guid: e8108c3abc75549229210073e44c73f9, type: 3}
   sprintAction: {fileID: -6033721862270664903, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  aimAction: {fileID: 4862749235381318444, guid: e8108c3abc75549229210073e44c73f9, type: 3}
   walkSpeed: 2.5
   sprintSpeed: 5
   maxDetection: 100

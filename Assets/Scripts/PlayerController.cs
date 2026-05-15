@@ -16,7 +16,13 @@ public class PlayerController : MonoBehaviour
     public InputActionReference toggleFlashlightAction;
 
     public InputActionReference sprintAction;
+    private bool sprintHeld;
+    private bool sprintToggled;
     private bool isSprinting;
+
+    public InputActionReference aimAction;
+    private Vector2 aimDirection;
+    private bool usingMouseAim = true;
 
     // used for moving the character and handling physics
     private Rigidbody2D rigidBody;
@@ -117,7 +123,8 @@ public class PlayerController : MonoBehaviour
         if (!isCaught) {
 
             // sprinting
-            isSprinting = sprintAction.action.IsPressed();
+            sprintHeld = sprintAction.action.IsPressed();
+            isSprinting = sprintHeld || sprintToggled;
 
             if (isSprinting && currentStamina > 0) {
                 if (currentStamina > 5) {
@@ -128,6 +135,7 @@ public class PlayerController : MonoBehaviour
             else {
                 currentStamina += staminaRechargeRate * Time.deltaTime;
                 speed = walkSpeed;
+                sprintToggled = false;
             }
 
             // directional movement
@@ -145,8 +153,11 @@ public class PlayerController : MonoBehaviour
             // }
 
             // use new input system to move the player
-            moveDirection = moveAction.action.ReadValue<Vector2>().normalized;
-            rigidBody.velocity = new Vector2(moveDirection.x * speed, moveDirection.y * speed);
+            moveDirection = moveAction.action.ReadValue<Vector2>();
+
+            if (moveDirection.sqrMagnitude > 0.1f) {
+                rigidBody.velocity = new Vector2(moveDirection.normalized.x * speed, moveDirection.normalized.y * speed);
+            }
 
             // toggle flashlight
             // if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
@@ -157,12 +168,28 @@ public class PlayerController : MonoBehaviour
             
 
             // handle sprite facing direction
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            // Vector3 mousePosition = Input.mousePosition;
+            // mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-            Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+            // Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
 
-            transform.right = mouseDirection;
+            // transform.right = mouseDirection;
+
+            // use new input system to aim
+            if (usingMouseAim) {
+                Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+                Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+                aimDirection = (mouseWorldPosition - transform.position);
+            }
+            else {
+                aimDirection = aimAction.action.ReadValue<Vector2>();
+            }
+
+            if (aimDirection.sqrMagnitude > 0.1f) {
+                transform.right = aimDirection.normalized;
+            }
+            
         }
         else {
             // player got caught
@@ -254,10 +281,14 @@ public class PlayerController : MonoBehaviour
     // enable and disable new input system actions
     private void OnEnable() {
         toggleFlashlightAction.action.started += toggleFlashlight;
+        aimAction.action.performed += OnAimPerformed;
+        sprintAction.action.performed += OnSprintPerformed;
     }
 
     private void OnDisable() {
         toggleFlashlightAction.action.started -= toggleFlashlight;
+        aimAction.action.performed -= OnAimPerformed;
+        sprintAction.action.performed -= OnSprintPerformed;
     }
 
     // toggle flashlight using new input system
@@ -278,6 +309,16 @@ public class PlayerController : MonoBehaviour
                 flashLightCollider.enabled = true;
                 audioSource.PlayOneShot(flashlightClickSound);
             }
+        }
+    }
+
+    private void OnAimPerformed(InputAction.CallbackContext context) {
+        usingMouseAim = context.control.device is Mouse;
+    }
+
+    private void OnSprintPerformed(InputAction.CallbackContext context) {
+        if (context.control.path.Contains("leftStickPress")) {
+            sprintToggled = !sprintToggled;
         }
     }
 }
