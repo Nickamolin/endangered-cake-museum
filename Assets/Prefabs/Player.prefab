@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 5378308811598291269}
   - component: {fileID: 8689587559239785939}
   - component: {fileID: 7515426001801810236}
+  - component: {fileID: 3504989437395856759}
   m_Layer: 8
   m_Name: PlayerBody
   m_TagString: Player
@@ -432,6 +433,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb66a2991f154d939686caa38848731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveAction: {fileID: -963742696133575064, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  toggleFlashlightAction: {fileID: 8045415459786167579, guid: e8108c3abc75549229210073e44c73f9, type: 3}
   walkSpeed: 2.5
   sprintSpeed: 5
   maxDetection: 100
@@ -739,6 +742,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3504989437395856759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343153983680596353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &2901412444032059328
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,7 +881,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 23.999939, y: -29.799835}
+  m_AnchoredPosition: {x: 23.999939, y: -29.799805}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6826857193226479900
@@ -1368,7 +1401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191.13138, y: -29.99997}
+  m_AnchoredPosition: {x: 191.13135, y: -30}
   m_SizeDelta: {x: 11.707581, y: 280.9828}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6236956127191143969

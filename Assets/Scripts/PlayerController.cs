@@ -5,9 +5,16 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    // handling new input system
+    public InputActionReference moveAction;
+    private Vector2 moveDirection;
+
+    public InputActionReference toggleFlashlightAction;
+
     // used for moving the character and handling physics
     private Rigidbody2D rigidBody;
 
@@ -106,23 +113,28 @@ public class PlayerController : MonoBehaviour
         // handle player inputs
         if (!isCaught) {
             // directional movement
-            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
-            }
-            if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, -speed);
-            }
-            if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
-                rigidBody.velocity = new Vector2(-speed, rigidBody.velocity.y);
-            }
-            if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
-                rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
-            }
+            // if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
+            //     rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
+            // }
+            // if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) {
+            //     rigidBody.velocity = new Vector2(rigidBody.velocity.x, -speed);
+            // }
+            // if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
+            //     rigidBody.velocity = new Vector2(-speed, rigidBody.velocity.y);
+            // }
+            // if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
+            //     rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+            // }
+
+            // use new input system to move the player
+            moveDirection = moveAction.action.ReadValue<Vector2>().normalized;
+            rigidBody.velocity = new Vector2(moveDirection.x * speed, moveDirection.y * speed);
 
             // toggle flashlight
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-                toggleFlashlight();
-            }
+            // if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+            //     toggleFlashlight();
+            // }
+            // new input system detection applied via action helper functions at bottom of script
 
             // sprinting
             if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0) {
@@ -231,7 +243,17 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void toggleFlashlight() {
+    // enable and disable new input system actions
+    private void OnEnable() {
+        toggleFlashlightAction.action.started += toggleFlashlight;
+    }
+
+    private void OnDisable() {
+        toggleFlashlightAction.action.started -= toggleFlashlight;
+    }
+
+    // toggle flashlight using new input system
+    private void toggleFlashlight(InputAction.CallbackContext context) {
         if (flashlightOn) {
             flashlightOn = false;
             renderingFlashLight.intensity = 0f;
