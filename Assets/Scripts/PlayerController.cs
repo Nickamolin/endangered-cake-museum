@@ -143,12 +143,7 @@ public class PlayerController : MonoBehaviour
                 sprintToggled = false;
             }
 
-            if (moveDirection.sqrMagnitude > stickDeadzone) {
-                rigidBody.velocity = new Vector2(moveDirection.normalized.x * speed, moveDirection.normalized.y * speed);
-            }
-            else {
-                sprintToggled = false;
-            }
+            // where movement once sat, moved to FixedUpdate to prevent "sticky" movement
 
             // use new input system to aim
             if (usingMouseAim) {
@@ -199,6 +194,17 @@ public class PlayerController : MonoBehaviour
 
         staminaBar.transform.localScale = new Vector3(1, currentStamina/maxStamina, 1);
 
+    }
+
+    void FixedUpdate() {
+        if (isCaught) return;
+        
+        if (moveDirection.sqrMagnitude > stickDeadzone) {
+            rigidBody.velocity = new Vector2(moveDirection.normalized.x * speed, moveDirection.normalized.y * speed);
+        }
+        else {
+            sprintToggled = false;
+        }
     }
 
     // handling collision with guard vision cones
