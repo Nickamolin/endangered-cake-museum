@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
 
     public InputActionReference toggleFlashlightAction;
 
+    public InputActionReference sprintAction;
+    private bool isSprinting;
+
     // used for moving the character and handling physics
     private Rigidbody2D rigidBody;
 
@@ -112,6 +115,21 @@ public class PlayerController : MonoBehaviour
 
         // handle player inputs
         if (!isCaught) {
+
+            // sprinting
+            isSprinting = sprintAction.action.IsPressed();
+
+            if (isSprinting && currentStamina > 0) {
+                if (currentStamina > 5) {
+                    speed = sprintSpeed;
+                }
+                currentStamina -= staminaUseRate * Time.deltaTime;
+            }
+            else {
+                currentStamina += staminaRechargeRate * Time.deltaTime;
+                speed = walkSpeed;
+            }
+
             // directional movement
             // if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
             //     rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
@@ -136,17 +154,7 @@ public class PlayerController : MonoBehaviour
             // }
             // new input system detection applied via action helper functions at bottom of script
 
-            // sprinting
-            if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0) {
-                if (currentStamina > 5) {
-                    speed = sprintSpeed;
-                }
-                currentStamina -= staminaUseRate * Time.deltaTime;
-            }
-            else {
-                currentStamina += staminaRechargeRate * Time.deltaTime;
-                speed = walkSpeed;
-            }
+            
 
             // handle sprite facing direction
             Vector3 mousePosition = Input.mousePosition;
@@ -158,10 +166,10 @@ public class PlayerController : MonoBehaviour
         }
         else {
             // player got caught
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+            // if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
                 
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // }
         }
 
         // handle detection
@@ -254,17 +262,22 @@ public class PlayerController : MonoBehaviour
 
     // toggle flashlight using new input system
     private void toggleFlashlight(InputAction.CallbackContext context) {
-        if (flashlightOn) {
-            flashlightOn = false;
-            renderingFlashLight.intensity = 0f;
-            flashLightCollider.enabled = false;
-            audioSource.PlayOneShot(flashlightClickSound);
+        if (isCaught) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else {
-            flashlightOn = true;
-            renderingFlashLight.intensity = 1f;
-            flashLightCollider.enabled = true;
-            audioSource.PlayOneShot(flashlightClickSound);
+            if (flashlightOn) {
+                flashlightOn = false;
+                renderingFlashLight.intensity = 0f;
+                flashLightCollider.enabled = false;
+                audioSource.PlayOneShot(flashlightClickSound);
+            }
+            else {
+                flashlightOn = true;
+                renderingFlashLight.intensity = 1f;
+                flashLightCollider.enabled = true;
+                audioSource.PlayOneShot(flashlightClickSound);
+            }
         }
     }
 }
