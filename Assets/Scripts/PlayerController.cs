@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public InputActionReference sprintAction;
     private bool sprintHeld;
-    private bool sprintToggled;
+    public bool sprintToggled;
     private bool isSprinting;
 
     public InputActionReference aimAction;
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     private TextMeshPro playerText;
 
     // flashlight controls
-    private bool flashlightOn;
+    public bool flashlightOn;
     [SerializeField] private Light2D renderingFlashLight;
     [SerializeField] private PolygonCollider2D flashLightCollider;
     [SerializeField] private AudioClip flashlightClickSound;
