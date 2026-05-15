@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 aimDirection;
     private bool usingMouseAim = true;
 
+    private float stickDeadzone = 0.1f;
+
     // used for moving the character and handling physics
     private Rigidbody2D rigidBody;
 
@@ -122,11 +124,14 @@ public class PlayerController : MonoBehaviour
         // handle player inputs
         if (!isCaught) {
 
+            // use new input system to move the player
+            moveDirection = moveAction.action.ReadValue<Vector2>();
+
             // sprinting
             sprintHeld = sprintAction.action.IsPressed();
             isSprinting = sprintHeld || sprintToggled;
 
-            if (isSprinting && currentStamina > 0) {
+            if (isSprinting && currentStamina > 0 && moveDirection.sqrMagnitude > stickDeadzone) {
                 if (currentStamina > 5) {
                     speed = sprintSpeed;
                 }
@@ -138,42 +143,12 @@ public class PlayerController : MonoBehaviour
                 sprintToggled = false;
             }
 
-            // directional movement
-            // if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
-            //     rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
-            // }
-            // if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) {
-            //     rigidBody.velocity = new Vector2(rigidBody.velocity.x, -speed);
-            // }
-            // if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
-            //     rigidBody.velocity = new Vector2(-speed, rigidBody.velocity.y);
-            // }
-            // if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
-            //     rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
-            // }
-
-            // use new input system to move the player
-            moveDirection = moveAction.action.ReadValue<Vector2>();
-
-            if (moveDirection.sqrMagnitude > 0.1f) {
+            if (moveDirection.sqrMagnitude > stickDeadzone) {
                 rigidBody.velocity = new Vector2(moveDirection.normalized.x * speed, moveDirection.normalized.y * speed);
             }
-
-            // toggle flashlight
-            // if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-            //     toggleFlashlight();
-            // }
-            // new input system detection applied via action helper functions at bottom of script
-
-            
-
-            // handle sprite facing direction
-            // Vector3 mousePosition = Input.mousePosition;
-            // mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-            // Vector2 mouseDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
-
-            // transform.right = mouseDirection;
+            else {
+                sprintToggled = false;
+            }
 
             // use new input system to aim
             if (usingMouseAim) {
@@ -186,17 +161,13 @@ public class PlayerController : MonoBehaviour
                 aimDirection = aimAction.action.ReadValue<Vector2>();
             }
 
-            if (aimDirection.sqrMagnitude > 0.1f) {
+            if (aimDirection.sqrMagnitude > stickDeadzone) {
                 transform.right = aimDirection.normalized;
             }
             
         }
         else {
             // player got caught
-            // if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-                
-            //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            // }
         }
 
         // handle detection
@@ -280,13 +251,13 @@ public class PlayerController : MonoBehaviour
 
     // enable and disable new input system actions
     private void OnEnable() {
-        toggleFlashlightAction.action.started += toggleFlashlight;
+        toggleFlashlightAction.action.performed += toggleFlashlight;
         aimAction.action.performed += OnAimPerformed;
         sprintAction.action.performed += OnSprintPerformed;
     }
 
     private void OnDisable() {
-        toggleFlashlightAction.action.started -= toggleFlashlight;
+        toggleFlashlightAction.action.performed -= toggleFlashlight;
         aimAction.action.performed -= OnAimPerformed;
         sprintAction.action.performed -= OnSprintPerformed;
     }
