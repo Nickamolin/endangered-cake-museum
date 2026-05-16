@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     private float stickDeadzone = 0.1f;
 
+    public InputActionReference continueAction;
+
     // used for moving the character and handling physics
     private Rigidbody2D rigidBody;
 
@@ -260,32 +262,30 @@ public class PlayerController : MonoBehaviour
         toggleFlashlightAction.action.performed += toggleFlashlight;
         aimAction.action.performed += OnAimPerformed;
         sprintAction.action.performed += OnSprintPerformed;
+        continueAction.action.performed += HandleContinue;
     }
 
     private void OnDisable() {
         toggleFlashlightAction.action.performed -= toggleFlashlight;
         aimAction.action.performed -= OnAimPerformed;
         sprintAction.action.performed -= OnSprintPerformed;
+        continueAction.action.performed -= HandleContinue;
+
     }
 
     // toggle flashlight using new input system
     private void toggleFlashlight(InputAction.CallbackContext context) {
-        if (isCaught) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (flashlightOn) {
+            flashlightOn = false;
+            renderingFlashLight.intensity = 0f;
+            flashLightCollider.enabled = false;
+            audioSource.PlayOneShot(flashlightClickSound);
         }
         else {
-            if (flashlightOn) {
-                flashlightOn = false;
-                renderingFlashLight.intensity = 0f;
-                flashLightCollider.enabled = false;
-                audioSource.PlayOneShot(flashlightClickSound);
-            }
-            else {
-                flashlightOn = true;
-                renderingFlashLight.intensity = 1f;
-                flashLightCollider.enabled = true;
-                audioSource.PlayOneShot(flashlightClickSound);
-            }
+            flashlightOn = true;
+            renderingFlashLight.intensity = 1f;
+            flashLightCollider.enabled = true;
+            audioSource.PlayOneShot(flashlightClickSound);
         }
     }
 
@@ -296,6 +296,15 @@ public class PlayerController : MonoBehaviour
     private void OnSprintPerformed(InputAction.CallbackContext context) {
         if (context.control.path.Contains("leftStickPress")) {
             sprintToggled = !sprintToggled;
+        }
+    }
+
+    private void HandleContinue(InputAction.CallbackContext context) {
+        if (isCaught) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else {
+            return;
         }
     }
 }
