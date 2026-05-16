@@ -408,9 +408,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c07c0b395014d0d9e2fb244b573d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 1149724505}
-  nextLevelName: Level3
-  textSpeed: 0.05
+  keyboardMouseDialogue: "Ridley lives in America in the year 2049 - 7 years after
+    sugar was officially banned throughout the country.\n\nCake manufacturing has
+    since stopped, and thus cake is no longer a good that Ridley's parents can simply
+    buy.\n\nRidley\u2019s parents have reluctantly refused to find Ridley a cake
+    for the party, but Ridley is determined."
+  touchDialogue: "Ridley lives in America in the year 2049 - 7 years after sugar
+    was officially banned throughout the country.\n\nCake manufacturing has since
+    stopped, and thus cake is no longer a good that Ridley's parents can simply buy.\n\nRidley\u2019s
+    parents have reluctantly refused to find Ridley a cake for the party, but Ridley
+    is determined."
+  gamepadDialogue: "Ridley lives in America in the year 2049 - 7 years after sugar
+    was officially banned throughout the country.\n\nCake manufacturing has since
+    stopped, and thus cake is no longer a good that Ridley's parents can simply buy.\n\nRidley\u2019s
+    parents have reluctantly refused to find Ridley a cake for the party, but Ridley
+    is determined."
+  keyboardContinuePrompt: Click To Continue
+  touchContinuePrompt: Tap To Continue
+  gamepadContinuePrompt: Press [A] To Continue
+  inputStage: Level3
+  tutorialText: 0
+  continueButton: {fileID: 1149724503}
+  continueAction: {fileID: 8179478803656570167, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  characterDelay: 0.05
   audioSource: {fileID: 709661168}
   characterSound: {fileID: 8300000, guid: 26bc43de12fa9a094bf35e61c08687a4, type: 3}
 --- !u!82 &709661168

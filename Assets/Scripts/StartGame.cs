@@ -1,28 +1,41 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class StartGame : MonoBehaviour
 {
-
     private TextMeshProUGUI titleTextDisplay;
     private TextMeshProUGUI startButtonTextDisplay;
+
+    [Header("Scene")]
     public Button startButton;
     public string startingLevelName;
-    
+
+    [Header("Typewriter")]
     public float textSpeed;
+    public AudioSource audioSource;
+    public AudioClip characterSound;
+
+    [Header("Input")]
+    [SerializeField] private InputActionReference continueAction;
+
+    [Header("Start Prompt Variants")]
+    [TextArea] public string keyboardPrompt = "Press Space to Start";
+    [TextArea] public string touchPrompt = "Tap to Start";
+    [TextArea] public string gamepadPrompt = "Press [A] to Start";
 
     private string titleText;
     private string startButtonText;
     private int textIndex;
-    public AudioSource audioSource;
-    public AudioClip characterSound;
 
-    // Start is called before the first frame update
-    void Start()
+    private Coroutine textCoroutine;
+    private bool isTyping = false;
+    private bool startButtonShown = false;
+
+    private void Start()
     {
         titleTextDisplay = GetComponent<TextMeshProUGUI>();
 
@@ -31,48 +44,116 @@ public class StartGame : MonoBehaviour
         titleText = titleTextDisplay.text;
         titleTextDisplay.text = "";
 
-        StartCoroutine(updateText());
-
         startButton.onClick.AddListener(TaskOnClick);
-
         startButton.enabled = false;
+
         startButtonTextDisplay = startButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        
-        startButtonText = startButtonTextDisplay.text;
+        startButtonText = GetPromptText();
         startButtonTextDisplay.text = "";
+
+        textCoroutine = StartCoroutine(UpdateText());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-            titleTextDisplay.text = titleText;
-
-            showStartButton();
+        if (continueAction != null)
+        {
+            continueAction.action.Enable();
+            continueAction.action.performed += OnContinue;
         }
     }
 
-    IEnumerator updateText() {
-        yield return new WaitForSeconds(textSpeed);
-        
-        if (titleTextDisplay.text.Length < titleText.Length) {
-            titleTextDisplay.text = titleTextDisplay.text + titleText[textIndex];
-            audioSource.PlayOneShot(characterSound);
+    private void OnDisable()
+    {
+        if (continueAction != null)
+        {
+            continueAction.action.performed -= OnContinue;
+            continueAction.action.Disable();
+        }
+    }
+
+    private void OnContinue(InputAction.CallbackContext context)
+    {
+        Continue();
+    }
+
+    public void Continue()
+    {
+        if (isTyping)
+        {
+            FinishTypingImmediately();
+            return;
+        }
+
+        if (startButtonShown)
+        {
+            TaskOnClick();
+        }
+    }
+
+    private IEnumerator UpdateText()
+    {
+        isTyping = true;
+
+        while (titleTextDisplay.text.Length < titleText.Length)
+        {
+            yield return new WaitForSeconds(textSpeed);
+
+            titleTextDisplay.text += titleText[textIndex];
+
+            if (audioSource != null && characterSound != null)
+            {
+                audioSource.PlayOneShot(characterSound);
+            }
+
             textIndex++;
+        }
 
-            StartCoroutine(updateText());
-        }
-        else {
-            showStartButton();
-        }
+        isTyping = false;
+        ShowStartButton();
     }
 
-    void TaskOnClick(){
-		SceneManager.LoadScene(startingLevelName);
-	}
+    private void FinishTypingImmediately()
+    {
+        if (textCoroutine != null)
+        {
+            StopCoroutine(textCoroutine);
+        }
 
-    void showStartButton() {
+        titleTextDisplay.text = titleText;
+        isTyping = false;
+
+        ShowStartButton();
+    }
+
+    private string GetPromptText()
+    {
+        if (Gamepad.current != null)
+        {
+            return gamepadPrompt;
+        }
+
+        if (Application.isMobilePlatform)
+        {
+            return touchPrompt;
+        }
+
+        return keyboardPrompt;
+    }
+
+    private void ShowStartButton()
+    {
+        if (startButtonShown) return;
+
+        startButtonShown = true;
         startButton.enabled = true;
+
+        startButtonText = GetPromptText();
         startButtonTextDisplay.text = startButtonText;
+    }
+
+    private void TaskOnClick()
+    {
+        SceneManager.LoadScene(startingLevelName);
     }
 }

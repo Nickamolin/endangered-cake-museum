@@ -409,9 +409,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c07c0b395014d0d9e2fb244b573d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 1149724505}
-  nextLevelName: Level4
-  textSpeed: 0.05
+  keyboardMouseDialogue: 'Ridley has seen advertisements around town that a local
+    museum has stashed and preserved a cake from the year 2041 - it remains in perfect
+    and edible condition.
+
+
+    The cake is well guarded as it is rare and very valuable.'
+  touchDialogue: 'Ridley has seen advertisements around town that a local museum
+    has stashed and preserved a cake from the year 2041 - it remains in perfect and
+    edible condition.
+
+
+    The cake is well guarded as it is rare and very valuable.'
+  gamepadDialogue: 'Ridley has seen advertisements around town that a local museum
+    has stashed and preserved a cake from the year 2041 - it remains in perfect and
+    edible condition.
+
+
+    The cake is well guarded as it is rare and very valuable.'
+  keyboardContinuePrompt: Click To Continue
+  touchContinuePrompt: Tap To Continue
+  gamepadContinuePrompt: Press [A] To Continue
+  inputStage: Level4
+  tutorialText: 0
+  continueButton: {fileID: 1149724503}
+  continueAction: {fileID: 8179478803656570167, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  characterDelay: 0.05
   audioSource: {fileID: 709661168}
   characterSound: {fileID: 8300000, guid: 26bc43de12fa9a094bf35e61c08687a4, type: 3}
 --- !u!82 &709661168

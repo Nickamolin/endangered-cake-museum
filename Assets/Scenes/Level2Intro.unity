@@ -408,9 +408,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c07c0b395014d0d9e2fb244b573d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 1149724505}
-  nextLevelName: Level2
-  textSpeed: 0.05
+  keyboardMouseDialogue: "Ridley is a 9 year old that is looking forward to his 10th
+    birthday party. \n\nRidley\u2019s parents are planning on throwing Ridley a birthday
+    party, and Ridley has specifically requested a big birthday cake. \n\nRidley
+    has seen shows and movies where children receive cakes, and has a faint memory
+    of potentially receiving one himself when he was very young (though he is not
+    sure)."
+  touchDialogue: "Ridley is a 9 year old that is looking forward to his 10th birthday
+    party. \n\nRidley\u2019s parents are planning on throwing Ridley a birthday party,
+    and Ridley has specifically requested a big birthday cake. \n\nRidley has seen
+    shows and movies where children receive cakes, and has a faint memory of potentially
+    receiving one himself when he was very young (though he is not sure)."
+  gamepadDialogue: "Ridley is a 9 year old that is looking forward to his 10th birthday
+    party. \n\nRidley\u2019s parents are planning on throwing Ridley a birthday party,
+    and Ridley has specifically requested a big birthday cake. \n\nRidley has seen
+    shows and movies where children receive cakes, and has a faint memory of potentially
+    receiving one himself when he was very young (though he is not sure)."
+  keyboardContinuePrompt: Click To Continue
+  touchContinuePrompt: Tap To Continue
+  gamepadContinuePrompt: Press [A] To Continue
+  inputStage: Level2
+  tutorialText: 0
+  continueButton: {fileID: 1149724503}
+  continueAction: {fileID: 8179478803656570167, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  characterDelay: 0.05
   audioSource: {fileID: 709661168}
   characterSound: {fileID: 8300000, guid: 26bc43de12fa9a094bf35e61c08687a4, type: 3}
 --- !u!82 &709661168

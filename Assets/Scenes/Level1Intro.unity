@@ -407,9 +407,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c07c0b395014d0d9e2fb244b573d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 1149724505}
-  nextLevelName: Level1
-  textSpeed: 0.05
+  keyboardMouseDialogue: "The \"Endangered Cake Museum\" closes its doors to the
+    public at 7PM.\n\nHired security guards roam the museum\u2019s halls at night
+    in order to make sure no one enters the museum while it is closed.\n\nIt's 3AM,
+    and Ridley has decided to sneak into the museum at night."
+  touchDialogue: "The \"Endangered Cake Museum\" closes its doors to the public at
+    7PM.\n\nHired security guards roam the museum\u2019s halls at night in order
+    to make sure no one enters the museum while it is closed.\n\nIt's 3AM, and Ridley
+    has decided to sneak into the museum at night."
+  gamepadDialogue: "The \"Endangered Cake Museum\" closes its doors to the public
+    at 7PM.\n\nHired security guards roam the museum\u2019s halls at night in order
+    to make sure no one enters the museum while it is closed.\n\nIt's 3AM, and Ridley
+    has decided to sneak into the museum at night."
+  inputStage: Level1
+  continueButton: {fileID: 1149724503}
+  continueAction: {fileID: 8179478803656570167, guid: e8108c3abc75549229210073e44c73f9, type: 3}
+  characterDelay: 0.05
   audioSource: {fileID: 709661168}
   characterSound: {fileID: 8300000, guid: 26bc43de12fa9a094bf35e61c08687a4, type: 3}
 --- !u!82 &709661168
