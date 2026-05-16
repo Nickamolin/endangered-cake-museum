@@ -15,7 +15,7 @@ public class StartGame : MonoBehaviour
     public string startingLevelName;
 
     [Header("Typewriter")]
-    public float textSpeed;
+    public float textSpeed = 0.05f;
     public AudioSource audioSource;
     public AudioClip characterSound;
 
@@ -25,6 +25,8 @@ public class StartGame : MonoBehaviour
     [Header("Start Prompt Variants")]
     [TextArea] public string keyboardPrompt = "Press Space to Start";
     [TextArea] public string touchPrompt = "Tap to Start";
+
+    // Kept for possible future controller-specific prompts.
     [TextArea] public string gamepadPrompt = "Press [A] to Start";
 
     private string titleText;
@@ -101,7 +103,7 @@ public class StartGame : MonoBehaviour
 
             titleTextDisplay.text += titleText[textIndex];
 
-            if (audioSource != null && characterSound != null)
+            if (audioSource != null && characterSound != null && !char.IsWhiteSpace(titleText[textIndex]))
             {
                 audioSource.PlayOneShot(characterSound);
             }
@@ -128,10 +130,8 @@ public class StartGame : MonoBehaviour
 
     private string GetPromptText()
     {
-        if (Gamepad.current != null)
-        {
-            return gamepadPrompt;
-        }
+        // For now, only distinguish mobile touch vs desktop keyboard/mouse.
+        // Gamepad prompt is kept for possible future use.
 
         if (Application.isMobilePlatform)
         {

@@ -9,11 +9,15 @@ public class StoryText : MonoBehaviour
     [Header("Dialogue Variants")]
     [TextArea] public string keyboardMouseDialogue;
     [TextArea] public string touchDialogue;
+
+    // Kept for possible future controller-specific dialogue.
     [TextArea] public string gamepadDialogue;
 
     [Header("Continue Prompt Variants")]
     public string keyboardContinuePrompt = "Click To Continue";
     public string touchContinuePrompt = "Tap To Continue";
+
+    // Kept for possible future controller-specific prompts.
     public string gamepadContinuePrompt = "Press [A] To Continue";
 
     [Header("Advance")]
@@ -52,8 +56,12 @@ public class StoryText : MonoBehaviour
         {
             continueButtonText = continueButton.GetComponentInChildren<TextMeshProUGUI>();
         }
+    }
 
+    private void Start()
+    {
         DetermineInputVariant();
+        StartDialogue(currentDialogue);
     }
 
     private void OnEnable()
@@ -74,22 +82,11 @@ public class StoryText : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        StartDialogue(currentDialogue);
-    }
-
     private void DetermineInputVariant()
     {
-        // Gamepad takes priority
-        if (Gamepad.current != null)
-        {
-            currentDialogue = gamepadDialogue;
-            currentContinuePrompt = gamepadContinuePrompt;
-            return;
-        }
+        // For now, only distinguish mobile touch vs desktop keyboard/mouse.
+        // Gamepad fields are kept for future use.
 
-        // Mobile touch
         if (Application.isMobilePlatform)
         {
             currentDialogue = touchDialogue;
@@ -97,7 +94,6 @@ public class StoryText : MonoBehaviour
             return;
         }
 
-        // Default desktop
         currentDialogue = keyboardMouseDialogue;
         currentContinuePrompt = keyboardContinuePrompt;
     }
@@ -128,9 +124,7 @@ public class StoryText : MonoBehaviour
         {
             dialogueText.text += c;
 
-            if (audioSource != null &&
-                characterSound != null &&
-                !char.IsWhiteSpace(c))
+            if (audioSource != null && characterSound != null && !char.IsWhiteSpace(c))
             {
                 audioSource.PlayOneShot(characterSound);
             }
