@@ -37,6 +37,10 @@ public class StoryText : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip characterSound;
 
+    [Header("Safety Delay")]
+    [SerializeField] private float inputDelay = 0.5f;
+    private float timeEnabled;
+
     private TextMeshProUGUI dialogueText;
     private TextMeshProUGUI continueButtonText;
 
@@ -71,6 +75,7 @@ public class StoryText : MonoBehaviour
             continueAction.action.Enable();
             continueAction.action.performed += OnContinue;
         }
+        timeEnabled = Time.time;
     }
 
     private void OnDisable()
@@ -140,6 +145,12 @@ public class StoryText : MonoBehaviour
 
     public void Continue()
     {
+        // Prevents accidental skips from the previous scene or rapid clicking
+        if (Time.time - timeEnabled < inputDelay)
+        {
+            return;
+        }
+
         if (isTyping)
         {
             FinishTypingImmediately();

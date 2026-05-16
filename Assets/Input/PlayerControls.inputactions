@@ -395,17 +395,6 @@
                 },
                 {
                     "name": "",
-                    "id": "efdad37b-3426-4f9e-9dc5-301bf4af9cf0",
-                    "path": "<Touchscreen>/Press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Continue",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a8f4dea2-d053-4dbb-8fbc-066a1168ee7a",
                     "path": "<Gamepad>/start",
                     "interactions": "",

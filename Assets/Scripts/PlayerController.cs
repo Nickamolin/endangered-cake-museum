@@ -275,6 +275,10 @@ public class PlayerController : MonoBehaviour
 
     // toggle flashlight using new input system
     private void toggleFlashlight(InputAction.CallbackContext context) {
+        if (isCaught) {
+            return;
+        }
+        
         if (flashlightOn) {
             flashlightOn = false;
             renderingFlashLight.intensity = 0f;
